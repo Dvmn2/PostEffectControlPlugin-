@@ -1,0 +1,8 @@
+name: PostEffectControlPlugin
+version: '${version}'
+
+main: net.dvmn2.posteffectcontrolplugin.PostEffectControlPlugin
+api-version: '1.21.11'
+load: POSTWORLD
+
+authors: [ DVMN2 ]
