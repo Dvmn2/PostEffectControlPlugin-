@@ -2,7 +2,16 @@ name: PostEffectControlPlugin
 version: '${version}'
 
 main: net.dvmn2.posteffectcontrolplugin.PostEffectControlPlugin
-api-version: '1.21.11'
+api-version: '1.21'
 load: POSTWORLD
 
 authors: [ DVMN2 ]
+softdepend: [ ResourceControlPlugin ]
+
+permissions:
+  posteffect.admin:
+    description: Доступ к командам /posteffect
+    default: op
+  posteffect.bypass:
+    description: Не кикается за отсутствие клиентского мода PostEffectControl (если включён require-client-mod)
+    default: false

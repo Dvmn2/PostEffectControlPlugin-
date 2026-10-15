@@ -1,0 +1,78 @@
+# Язык сообщений плагина: "ru", "en" или "auto".
+# "auto" — для игрока берётся его игровая локаль, для консоли — английский.
+#
+# Plugin message language: "ru", "en" or "auto".
+settings:
+  language: auto
+
+  # Кикать игроков без клиентского мода PostEffectControl.
+  # Исключение: право posteffect.bypass. По умолчанию выключено: без мода эффекты просто не видны.
+  require-client-mod: false
+  mod-check-timeout-seconds: 10
+
+  # Длительность по умолчанию для /posteffect give без указания времени (секунды). 0 = бессрочно.
+  default-duration-seconds: 30
+
+  # Плавное появление/затухание по умолчанию (миллисекунды).
+  default-fade-in-ms: 600
+  default-fade-out-ms: 800
+
+  # Разрешить эффекты из ресурспаков клиентов (идентификатор вида namespace:path).
+  # Шейдеры по сети не передаются: эффект должен лежать в ресурспаке на клиенте
+  # (установлен игроком или выдан через ResourceControl).
+  # Если false — такие эффекты не отправляются и не применяются.
+  allow-pack-effects: true
+
+  # Если установлен ResourceControlPlugin — выдавать игрокам паки из resource-packs (см. ниже)
+  # автоматически, пока у них есть соответствующий эффект.
+  resourcecontrol-integration: true
+
+limits:
+  # Максимум слоёв (эффектов) одновременно на одном игроке.
+  max-layers-per-player: 12
+
+# Привязка эффектов из ресурспаков к пакам в ResourceControlPlugin (необязательно).
+# id — namespace (все эффекты этого namespace) или полный идентификатор эффекта; точное совпадение приоритетнее.
+# pack — имя пака в /resourcecontrol pack list.
+# Если у игрока нет такого эффекта, пак выдаётся ему временно и снимается, когда эффект больше не нужен.
+# Паки с шейдерами выдаются, только если в ResourceControlPlugin включён settings.allow-shaders.
+resource-packs: []
+#  - id: myshaders
+#    pack: my-shaders-pack
+#  - id: "myshaders:glitch2"
+#    pack: other-pack
+
+# Приоритеты слоёв. Слои рисуются по возрастанию приоритета: чем БОЛЬШЕ число, тем выше слой
+# (обрабатывает уже готовую картинку нижних слоёв). Не указанные эффекты = 0.
+# При равном приоритете выше тот, что выдан позже. Порядок не зависит от очерёдности выдачи.
+# Ключи — полные id эффектов (встроенные: freeze; из ресурспаков: "namespace:path"), целые числа -1000..1000.
+# Слои с over_hud рисуются отдельным проходом поверх HUD и сравниваются только между собой.
+priorities: {}
+#  vignette: 100
+#  "pectest:hudframe": 90
+#  "pectest:wave": 50
+#  blur: -10
+
+# Пресеты: набор слоёв встроенных эффектов и эффектов из ресурспаков под одним именем.
+# /posteffect give <игрок> nightmare 30s
+presets:
+  nightmare:
+    display-name: Nightmare
+    layers:
+      - effect: vignette
+        intensity: 0.9
+        color: "#7a0000"
+        params: { radius: 0.25, softness: 0.7 }
+      - effect: chromatic
+        intensity: 0.6
+      - effect: wobble
+        intensity: 0.35
+  deep-freeze:
+    display-name: Deep freeze
+    layers:
+      - effect: freeze
+        intensity: 1.0
+      - effect: vignette
+        intensity: 0.5
+        color: "#bfe6ff"
+# Пример слоя из ресурспака: effect: "example:tint", params задаются именами из описания эффекта в паке.
